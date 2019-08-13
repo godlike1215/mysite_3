@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    {% if category %}
+        分类页： {{ category.name }}
+    {% elif tag %}
+        标签页： {{ tag.name }}
+    {% else %}
+        首页
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    {% for post in post_list %}
+        <p>{{ post.id }}</p>
+        <li><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></li>
+        <p>作者： {{ post.owner }} 分类： <a href="{% url 'post_category' post.category.id %}">{{ post.category }}</a></p>
+        <p>{{ post.content }}</p>
+    {% endfor %}
+{% endblock %}

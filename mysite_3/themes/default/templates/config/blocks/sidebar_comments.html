@@ -1,0 +1,5 @@
+<ul>
+    {% for comment in comments %}
+        <li>{{ comment.target.title }} | {{ comment.nickname }}: {{ comment.content }}</li>
+    {% endfor %}
+</ul>
