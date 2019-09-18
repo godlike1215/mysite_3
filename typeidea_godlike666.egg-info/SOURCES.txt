@@ -1,8 +1,0 @@
-manage.py
-setup.py
-typeidea_godlike666.egg-info/PKG-INFO
-typeidea_godlike666.egg-info/SOURCES.txt
-typeidea_godlike666.egg-info/dependency_links.txt
-typeidea_godlike666.egg-info/entry_points.txt
-typeidea_godlike666.egg-info/requires.txt
-typeidea_godlike666.egg-info/top_level.txt

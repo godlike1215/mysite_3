@@ -14,12 +14,9 @@ class CommentView(TemplateView):
 	def post(self, request, *args, **kwargs):
 		comment_form = CommentForm(request.POST)
 		target = request.POST.get('target')
-		# print(target)
-		# print(comment_form)
 
 		if comment_form.is_valid():
 			instance = comment_form.save(commit=False)
-			# print(type(instance))
 			instance.target = target
 			instance.save()
 			succeed = True

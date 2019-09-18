@@ -13,7 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-import xadmin
 from django.conf.urls import url, include
 from django.contrib import admin
 from blog import views
@@ -34,8 +33,7 @@ router = DefaultRouter()
 router.register(r'post', PostViewSet, base_name='api-post')
 
 urlpatterns = [
-    url(r'^admin/', xadmin.site.urls, name='xadmin'),
-    # url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     # url(r'^$', views.post_list, name='post_list'),
     url(r'^$', IndexView.as_view(), name='index'),
     # url(r'^category/(?P<category_id>\d+)$', views.post_list, name='post_category'),

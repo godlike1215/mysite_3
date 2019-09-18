@@ -1,4 +1,4 @@
-# coding:utf-8
+# encoding='utf-8'
 from setuptools import setup, find_packages
 
 
@@ -11,16 +11,12 @@ setup(
     url='https://www.the5fire.com',
     license='MIT',
     packages=find_packages('mysite_3'),
-    # package_dir={'': 'typeidea'},
-    # package_data={'': [    # 打包数据文件，方法一
-        # 'themes/*/*/*/*',  # 需要按目录层级匹配
-    # ]},
-    include_package_data=True,  # 方法二 配合 MANIFEST.in文件
+    include_package_data=True,
     install_requires=[
         'django==1.11',
         'gunicorn==19.8.1',
-        'supervisor==4.0.0dev0',
-        'xadmin==2.0.1',
+        'supervisor==4.0.0',
+        'xadmin==0.6.1',
         'mysqlclient==1.3.12',
         'django-ckeditor==5.4.0',
         'django-rest-framework==0.1.0',
@@ -44,23 +40,5 @@ setup(
             'mysite_3_manage = manage:main',
         ]
     },
-    classifiers=[  # Optional
-        # How mature is this project? Common values are
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
-
-        # Indicate who your project is intended for
-        'Intended Audience :: Developers',
-        'Topic :: Blog :: Django Blog',
-
-        # Pick your license as you wish
-        'License :: OSI Approved :: MIT License',
-
-        # Specify the Python versions you support here. In particular, ensure
-        # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 3.6',
-    ],
 
 )

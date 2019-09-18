@@ -25,32 +25,31 @@ class PostAdminForm(forms.ModelForm):
 	class Meta:
 		model = Post
 		fields = ('category', 'tags', 'description', 'title',
-				   'is_md', 'content', 'content_md', 'content_ck',
+				  'is_md', 'content', 'content_md', 'content_ck',
 				  'status')
 
-	def __init__(self, instance=None, initial=None, **kwargs):
-		initial = initial or {}
+	def __init__(self, *args, **kwargs):
+		initial = kwargs.get('initial') or {}
+		instance = kwargs.get('instance')
 		if instance:
 			if instance.is_md:
 				initial['content_md'] = instance.content
 			else:
 				initial['content_ck'] = instance.content
-
-		super().__init__(instance=instance, initial=initial, **kwargs)
+		kwargs.update({'initial': initial})
+		super().__init__(*args, **kwargs)
 
 	def clean(self):
 		is_md = self.cleaned_data.get('is_md')
-		print(self.cleaned_data)
 		if is_md:
 			content_field_name = 'content_md'
 		else:
 			content_field_name = 'content_ck'
 		content = self.cleaned_data.get(content_field_name)
+		print(content)
 		if not content:
 			self.add_error(content_field_name, '必须填！')
 			return
 		self.cleaned_data['content'] = content
 		return super().clean()
 
-	class Media:
-		js = ('js/post_editor.js', )

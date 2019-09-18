@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+VERSION = '${version}'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +26,7 @@ SECRET_KEY = 'k@b8j0ay-8ws7j*r-un0d8*4rs2bwv6***4#s!^k#zx5o7&qs%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -44,9 +45,6 @@ INSTALLED_APPS = [
     'blog',
     'comment',
     'config',
-    'xadmin',
-    'crispy_forms',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -136,9 +134,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-XADMIN_TITLE = '管理后台'
-XADMIN_FOOTER_TITLE = 'power by godlike'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

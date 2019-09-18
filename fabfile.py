@@ -1,3 +1,4 @@
+# encoding='utf-8'
 import os
 from datetime import datetime
 
@@ -11,15 +12,16 @@ from fabric.decorators import task
 
 
 env.roledefs = {
-	'myserver': ['Liujianyang123.*@49.232.1.8:22']
+	'myserver': ['root@49.232.1.8:22']
 }
 env.PROJECT_NAME = 'mysite_3'
 env.SETTINGS_BASE = 'mysite_3/settings.py'
 
 env.DEPLOY_PATH = '/root/my-venv'
-env.VENV_ACTIVATE = os.path.join(env.DEPLOY_PATH, 'bin', 'activate')
-env.PYPI_HOST = '127.0.0.1'
-env.PYPI_INDEX = 'http://127.0.0.1'
+# env.VENV_ACTIVATE = os.path.join(env.DEPLOY_PATH, 'bin', 'activate')
+env.VENV_ACTIVATE = env.DEPLOY_PATH + '/bin/activate'
+# env.PYPI_HOST = '127.21.0.1'
+# env.PYPI_INDEX = 'http://127.21.0.6：8080/simple'
 env.PROCESS_COUNT = 2
 env.PORT_PREFIX = 909
 
@@ -28,11 +30,11 @@ class _Version:
 	origin_record = {}
 
 	def replace(self, f, version):
-		with open(f, 'r') as fd:
+		with open(f, 'r', encoding='utf-8') as fd:
 			origin_content = fd.read()
 			content = origin_content.replace('${version}', version)
 
-		with open(f, 'w') as fd:
+		with open(f, 'w', encoding='utf-8') as fd:
 			fd.write(content)
 
 		self.origin_record[f] = origin_content
@@ -60,7 +62,9 @@ def build(version=None):
 	_version.set(['setup.py', env.SETTINGS_BASE], version)
 
 	with settings(warn_only=True):
-		local('twine upload --repository-url http://upload.pypi.org/legacy/ dist/*')
+		local('python setup.py bdist_wheel')
+		local('twine upload --repository-url https://upload.pypi.org/legacy/ dist/*')
+		# local('python setup.py bdist_wheel upload -r internal')
 
 	_version.revert()
 
@@ -72,25 +76,25 @@ def _ensure_virtualenv():
 	if not exists(env.DEPLOY_PATH):
 		run('mkdir -p %s' % env.DEPLOY_PATH)
 
-	run('python3.6 -m venv %s' % env.DEPLOY_PATH)
+	run('virtualenv %s' % env.DEPLOY_PATH)
 
 
-def _reload_supervisoird(deploy_path, profile):
-	template_dir = 'conf'
-	filename = 'supervisord.conf'
-	destination = env.DEPLOY_PATH
-	context = {
-		'process_count': env.PROCESS_COUNT,
-		'port_prefix': env.PORT_PREFIX,
-		'profile': profile,
-		'deplpy_path': deploy_path,
-	}
-	upload_template(filename, destination, context=context, use_jinja=True,
-					template_dir=template_dir)
-	with settings(warn_only=True):
-		result = run('supervisorct1 -c %s/supervisord.conf shutdown' % deploy_path)
-		if result:
-			run('supervisord -c %s/supervisord.conf' % deploy_path)
+# def _reload_supervisoird(deploy_path, profile):
+# 	template_dir = 'conf'
+# 	filename = 'supervisord.conf'
+# 	destination = env.DEPLOY_PATH
+# 	context = {
+# 		'process_count': env.PROCESS_COUNT,
+# 		'port_prefix': env.PORT_PREFIX,
+# 		'profile': profile,
+# 		'deplpy_path': deploy_path,
+# 	}
+# 	upload_template(filename, destination, context=context, use_jinja=True,
+# 					template_dir=template_dir)
+# 	with settings(warn_only=True):
+# 		result = run('supervisorct1 -c %s/supervisord.conf shutdown' % deploy_path)
+# 		if result:
+# 			run('supervisord -c %s/supervisord.conf' % deploy_path)
 
 
 @task
@@ -102,13 +106,22 @@ def deploy(version, profile):
 	   3. 安装软件包
 	   4. 启动
 	"""
+	print(env.VENV_ACTIVATE)
 	_ensure_virtualenv()
 	package_name = env.PROJECT_NAME + '==' + version
 	with prefix('source %s' % env.VENV_ACTIVATE):
-		run('pip install %s -i %s --trusted-host %s' % (
+		# run('pip install %s -i %s --trusted-host %s' % (
+		# 	package_name,
+		# 	env.PYPY_INDEX,
+		# 	env.PYPI_HOST,
+		# run('pip install %s -i --index-url %s' % (
+		# 	package_name,
+		# 	env.PYPI_INDEX,
+			# env.PYPI_HOST,
+		run('pip install %s' % (
 			package_name,
-			env.PYPY_INDEX,
-			env.PYPI_HOST,
+			# env.PYPI_INDEX,
+			# env.PYPI_HOST,
 		))
-		_reload_supervisoird(env.DEPLOY_PATH, profile)
-		run('echo yes | %s/bin/mamage.py collectstatic' % env.DEPLOY_PATH)
+		# _reload_supervisoird(env.DEPLOY_PATH, profile)
+		# run('echo yes | %s/bin/manage.py collectstatic' % env.DEPLOY_PATH)

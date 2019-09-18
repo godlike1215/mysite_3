@@ -1,3 +1,0 @@
-[console_scripts]
-mysite_3_manage = manaeg:main
-

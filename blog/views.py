@@ -42,7 +42,6 @@ class CommonViewMixin:
 			'sidebars': SideBar.get_sidebars(),
 		})
 		context.update(Category.get_navs())
-		# print(context)
 		return context
 
 
@@ -64,7 +63,6 @@ class CategoryView(IndexView):
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
-		# print(queryset)
 		category_id = self.kwargs.get('category_id')
 		return queryset.filter(category_id=category_id)
 
@@ -94,8 +92,6 @@ class PostDetailView(CommonViewMixin, DetailView):
 			'comment_form': CommentForm,
 			'comment_list': Comment.get_by_target(self.request.path)
 		})
-		# print(self.request.path)
-		# print(Comment.objects.all())
 		return context
 
 	def get(self, request, *args, **kwargs):
@@ -107,7 +103,7 @@ class PostDetailView(CommonViewMixin, DetailView):
 		# post_obj = Post.objects.get(pk=self.object.id)
 		# post_obj.pv = F('pv') + 1
 		# post_obj.save()
-		# 上面三行是麻烦的下发，下面的是简便写法,用update方法
+		# 上面三行是麻烦的写法，下面的是简便写法,用update方法
 		# Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1, uv=F('uv') + 1)
 		self.handle_visited()
 		return response
@@ -116,15 +112,12 @@ class PostDetailView(CommonViewMixin, DetailView):
 		increase_pv = False
 		increase_uv = False
 		uid = self.request.uid
-		# print(uid, 'a')
+		print(uid)
 		pv_key = 'pv:%s:%s' % (uid, self.request.path)
-		# print(pv_key)
 		uv_key = 'uv:%s:%s:%s' % (uid, str(date.today()), self.request.path)
-		# print(uv_key)
 		if not cache.get(pv_key):
 			increase_pv = True
 			cache.set(pv_key, 1, 1*60)  # 1分钟有效
-			# print(cache)
 
 		if not cache.get(uv_key):
 			increase_uv = True
@@ -143,16 +136,12 @@ class SearchView(IndexView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		keyword = self.request.GET.get('keyword1', '')
-		# print(keyword)
 		context.update({'keyword': keyword})
-		# print(context)
 		return context
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
-		print(queryset)
 		keyword = self.request.GET.get('keyword1', '')
-		# print(keyword)
 		if not keyword:
 			return queryset
 		return queryset.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword))

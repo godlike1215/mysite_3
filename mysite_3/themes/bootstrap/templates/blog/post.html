@@ -11,7 +11,9 @@
     <span>作者： {{ post.owner }}</span>
     <span>分类： {{ post.category }}</span>
 </div>
-    {{ post.content }}
+    {% autoescape off %}
+    {{ post.content_html }}
+    {% endautoescape %}
 <hr/>
 {#<div class="comment">#}
 {#    <form class="form-group" action="/comment/" method="post">#}

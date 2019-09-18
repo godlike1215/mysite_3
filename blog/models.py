@@ -57,10 +57,6 @@ class Post(models.Model):
 	uv = models.IntegerField(default=1)
 	is_md = models.BooleanField(default=True, verbose_name='markdown语法')
 
-	# @cached_property
-	# def tags(self):
-	# 	return ','.join(self.tags.values_list('name', flat=True))
-
 	def __str__(self):
 		return self.title
 
