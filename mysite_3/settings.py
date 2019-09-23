@@ -136,9 +136,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# 定义额外的静态文件地址
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'mysite_3', 'themes', THEME, 'static'),
+]
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = 'article_images'
 
 DEFAULT_FILE_STORAGE = 'mysite_3.storage.WatermarkStorage'
+
+LOGIN_REDIRECT_URL = '/'

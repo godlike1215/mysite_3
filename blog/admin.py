@@ -3,7 +3,6 @@ from django.contrib import admin
 from blog.adminforms import PostAdminForm
 from .models import Category, Post, Tag
 from mysite_3.base_admin import BaseOwnerAdmin
-import mistune
 
 # Register your models here.
 

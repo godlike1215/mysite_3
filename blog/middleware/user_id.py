@@ -10,7 +10,6 @@ class UserIDMiddleware:
 
 	def __call__(self, request):
 		uid = self.generate_uid(request)
-		print(uid)
 		request.uid = uid
 		response = self.get_response(request)
 		# 生成cookie

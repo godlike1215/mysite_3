@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from blog import views
-from blog.views import IndexView, CategoryView, PostDetailView, SearchView, AuthorView
+from blog.views import register
+from blog.views import IndexView, CategoryView, PostDetailView, SearchView, AuthorView, PasswordChange
 from config.views import LinkListView
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
@@ -26,6 +26,7 @@ from autocomplete import CategoryAutocomplete, TagAutocomplete
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework.routers import DefaultRouter
+from django.contrib.auth import views
 
 from blog.apis import PostViewSet
 
@@ -34,6 +35,16 @@ router.register(r'post', PostViewSet, base_name='api-post')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^login/', views.login, {'template_name': 'blog/login.html'}, name='user_login'),
+    url(r'^logout/', views.logout, {'template_name': 'blog/logout.html'}, name='user_logout'),
+    url(r'^change-password', PasswordChange.as_view(), name='change_password'),
+    url(r'^change-password-done', views.PasswordChangeDoneView.as_view(),
+        {
+            # 'template_name': 'blog/password_change_done.html',
+            'success_url': 'blog/password_change_done.html',
+        },
+        name='password_change_done'),
+    url(r'^register/', register, name='register'),
     # url(r'^$', views.post_list, name='post_list'),
     url(r'^$', IndexView.as_view(), name='index'),
     # url(r'^category/(?P<category_id>\d+)$', views.post_list, name='post_category'),

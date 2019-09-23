@@ -11,7 +11,9 @@ class CategoryAutocomplete(autocomplete.Select2QuerySetView):
 		qs = Category.objects.filter(owner=self.request.user)
 
 		if self.q:
+			print(self.q)
 			qs = qs.filter(name__istartswith=self.q)
+			print(qs)
 		return qs
 
 

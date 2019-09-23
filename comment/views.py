@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import CommentForm
 from django.views.generic import TemplateView
+from django.contrib.auth import login, logout, authenticate
 
 # Create your views here.
 
@@ -32,3 +33,5 @@ class CommentView(TemplateView):
 		# 显示forms.py中clean_content中提出的异常
 		# print(comment_form.errors.items())
 		return self.render_to_response(context)
+
+

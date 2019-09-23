@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/bootstrap.min.css' %}"
+          rel="stylesheet" media="screen">
+    <style>
+        .post {
+            margin-bottom: 5px;
+        }
+    </style>
+    {% block extra_head %}
+
+    {% endblock %}
+</head>
+<body>
+    <div class="container head">
+        <nav class="navbar navbar-expand-lg navbor-light bg-light">
+            <a class="navbor-brand" href="{% url 'index' %}">首页</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                </ul>
+            </div>
+        </nav>
+        <div class="jumbotron">
+            <h1 class="display-4">Typeidea</h1>
+            <p class="lead">基于django</p>
+        </div>
+    </div>
+    <form class="form-horizontal text-center" action="{% url 'register' %}" method="post">{% csrf_token %}
+        <h2>注册</h2>
+        <div class="form-group">
+            <label for="{{ user_form.username.id_for_label }}">用户名: </label>
+{#            <input  type="text" id="{{ user_form.username.id_for_label}}" value="{{ user_form.username }}">#}
+        <p>{{ user_form.username }}</p>
+        </div>
+        <div class="form-group">
+            <label for="{{ user_form.password.id_for_label }}">密码: </label>
+{#            <input  type="password" id="{{ user_form.password.id_for_label}}">#}
+            <p>{{ user_form.password }}</p>
+        </div>
+        <div class="form-group">
+            <label for="{{ user_form.password2.id_for_label }}">确认密码: </label>
+{#            <input  type="password" id="{{ user_form.password2.id_for_label}}">#}
+            <p>{{ user_form.password2 }}</p>
+        </div>
+        <div class="form-group">
+            <label for="{{ user_form.email.id_for_label }}">邮箱: </label>
+{#            <input  type="email" id="{{ user_form.email.id_for_label}}">#}
+            <p>{{ user_form.email }}</p>
+        </div>
+        <input type="submit" class="btn btn-primary" value="注册">
+    </form>
+{#    <form action="{% url 'index' %}" method="post">{% csrf_token %}#}
+{#    {{ user_form.as_p }}#}
+{#    <input type="submit">#}
+{#    </form>#}
+    <footer class="footer">
+        <div class="container">
+            <hr/>
+            <nav class="nav category">
+                <a href="#" class="nav-link">读书</a>
+                <a href="{% url 'link' %}" class="nav-link">友链</a>
+            </nav>
+        </div>
+        <div class="container power">
+            <span class="text-muted">Power by sss</span>`
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,7 +1,9 @@
 from datetime import date
 from django.db.models import Q, F
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, reverse
 from django.template.loader import render_to_string
+from django.contrib.auth.views import PasswordChangeDoneView, PasswordChangeView
 
 
 from .models import Post, Tag, Category
@@ -10,6 +12,8 @@ from comment.models import Comment
 from django.views.generic import ListView, DetailView
 from comment.forms import CommentForm
 from django.core.cache import cache
+from django.contrib.auth.models import User
+from .forms import UserForm
 
 # Create your views here.
 
@@ -112,7 +116,6 @@ class PostDetailView(CommonViewMixin, DetailView):
 		increase_pv = False
 		increase_uv = False
 		uid = self.request.uid
-		print(uid)
 		pv_key = 'pv:%s:%s' % (uid, self.request.path)
 		uv_key = 'uv:%s:%s:%s' % (uid, str(date.today()), self.request.path)
 		if not cache.get(pv_key):
@@ -153,3 +156,21 @@ class AuthorView(IndexView):
 		author_id = self.kwargs.get('author_id')
 		return qs.filter(owner_id=author_id)
 
+
+def register(request):
+	user_form = UserForm()
+	context = {
+		'user_form': user_form,
+	}
+	if request.method == 'POST':
+		user_form = UserForm(request.POST)
+		if user_form.is_valid():
+			content = user_form.save(commit=False)
+			content.set_password(user_form.cleaned_data['password'])
+			content.save()
+			return redirect(reverse('index'))
+	return render(request, 'blog/register.html', context)
+
+
+class PasswordChange(PasswordChangeView):
+	template_name = 'blog/password_change_form.html'
