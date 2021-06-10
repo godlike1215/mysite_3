@@ -13,7 +13,7 @@ setup(
     packages=find_packages('mysite_3'),
     include_package_data=True,
     install_requires=[
-        'django==1.11',
+        'django==2.2.24',
         'gunicorn==19.8.1',
         'supervisor==4.0.0',
         'xadmin==0.6.1',
