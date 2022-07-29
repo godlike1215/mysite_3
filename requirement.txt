@@ -35,7 +35,7 @@ jedi==0.13.3
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 meld3==1.0.2
-mistune==0.8.4
+mistune==2.0.3
 odfpy==1.4.0
 openpyxl==2.6.2
 paramiko==2.6.0
